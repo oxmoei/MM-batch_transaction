@@ -2,20 +2,37 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createConfig, http, WagmiProvider } from "wagmi";
-import { sepolia } from "viem/chains";
+import { mainnet, sepolia, polygon, bsc, arbitrum, base } from "viem/chains";
 import { ReactNode } from "react";
+import { metaMask } from "wagmi/connectors";
 
-export const connectors = [];
+export const connectors = [
+   metaMask({
+     infuraAPIKey: process.env.NEXT_PUBLIC_INFURA_API_KEY,
+   }),
+];
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 2,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 export const wagmiConfig = createConfig({
-  chains: [sepolia],
+  chains: [mainnet, sepolia, polygon, bsc, arbitrum, base],
   connectors,
   multiInjectedProviderDiscovery: false,
   ssr: true,
   transports: {
-    [sepolia.id]: http(),
+    [mainnet.id]: http('https://eth.llamarpc.com', { retryCount: 3 }),
+    [sepolia.id]: http('https://rpc.sepolia.org', { retryCount: 3 }),
+    [polygon.id]: http('https://polygon-rpc.com', { retryCount: 3 }),
+    [bsc.id]: http('https://bsc-dataseed.binance.org', { retryCount: 3 }),
+    [arbitrum.id]: http('https://arb1.arbitrum.io/rpc', { retryCount: 3 }),
+    [base.id]: http('https://mainnet.base.org', { retryCount: 3 }),
   },
 });
 

@@ -7,12 +7,11 @@ import { useState, useEffect, useRef } from "react";
 import { getCallsStatus } from "@wagmi/core";
 import { wagmiConfig as config } from "@/providers/AppProvider";
 import { parseEther } from "viem";
-import { mainnet, sepolia, polygon, bsc, arbitrum, base } from "viem/chains";
+import { mainnet, polygon, bsc, arbitrum, base } from "viem/chains";
 
 // Supported chain configuration
 const SUPPORTED_CHAINS = [
   { id: mainnet.id, name: 'Ethereum', logo: '/ethereum-logo.svg' },
-  { id: sepolia.id, name: 'Sepolia', logo: '/ethereum2-logo.svg' },
   { id: polygon.id, name: 'Polygon', logo: '/polygon-logo.svg' },
   { id: bsc.id, name: 'BSC', logo: '/bnb-logo.svg' },
   { id: arbitrum.id, name: 'Arbitrum', logo: '/arbitrum-logo.svg' },
@@ -22,7 +21,6 @@ const SUPPORTED_CHAINS = [
 // Chain ID to chain name mapping
 const CHAIN_NAMES = {
   1: 'Ethereum',
-  11155111: 'Sepolia',
   137: 'Polygon',
   56: 'Binance Smart Chain',
   42161: 'Arbitrum',
@@ -33,7 +31,6 @@ const CHAIN_NAMES = {
 function getExplorerUrl(chainId: number, txHash: string): string {
   const explorerUrls = {
     1: `https://etherscan.io/tx/${txHash}`, // Ethereum
-    11155111: `https://sepolia.etherscan.io/tx/${txHash}`, // Sepolia
     137: `https://polygonscan.com/tx/${txHash}`, // Polygon
     56: `https://bscscan.com/tx/${txHash}`, // BSC
     42161: `https://arbiscan.io/tx/${txHash}`, // Arbitrum

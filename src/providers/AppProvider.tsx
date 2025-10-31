@@ -2,7 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createConfig, http, WagmiProvider } from "wagmi";
-import { mainnet, sepolia, polygon, bsc, arbitrum, base } from "viem/chains";
+import { mainnet, polygon, bsc, arbitrum, base } from "viem/chains";
 import { ReactNode } from "react";
 import { metaMask } from "wagmi/connectors";
 
@@ -22,13 +22,12 @@ const queryClient = new QueryClient({
 });
 
 export const wagmiConfig = createConfig({
-  chains: [mainnet, sepolia, polygon, bsc, arbitrum, base],
+  chains: [mainnet, polygon, bsc, arbitrum, base],
   connectors,
   multiInjectedProviderDiscovery: false,
   ssr: true,
   transports: {
     [mainnet.id]: http('https://eth.llamarpc.com', { retryCount: 3 }),
-    [sepolia.id]: http('https://rpc.sepolia.org', { retryCount: 3 }),
     [polygon.id]: http('https://polygon-rpc.com', { retryCount: 3 }),
     [bsc.id]: http('https://bsc-dataseed.binance.org', { retryCount: 3 }),
     [arbitrum.id]: http('https://arb1.arbitrum.io/rpc', { retryCount: 3 }),

@@ -1,4 +1,4 @@
-# MM‑EIP7702 Batch Transaction Tool
+# Metamask Smart-Account Batch Transaction Tool
 
 Browser-based atomic batch transaction tool built with Next.js, wagmi, and viem. It leverages MetaMask Smart Accounts (EIP‑7702) to send multiple transactions in a single atomic batch, improving UX and often saving gas.
 

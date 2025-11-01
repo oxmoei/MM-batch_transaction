@@ -62,10 +62,11 @@ const texts = {
     tokenAddress: '代币合约地址',
     data: '数据',
     add: '添加',
-    transactionList: '交易列表',
+    transactionList: '☰ 交易列表',
     noTransactions: '暂无交易',
     sendBatchTransaction: '发送批量交易',
-    sendingTransaction: '⌛ 正在发送交易...',
+    sendBatchTransactionWithGas: '发送批量交易（只需花费1次Gas费）',
+    sendingTransaction: '正在发送交易...',
     checkStatus: '🔍 检查交易状态',
     checkingStatus: '正在检查状态...',
     transactionHash: '交易哈希',
@@ -77,22 +78,18 @@ const texts = {
     failed: '失败',
     gasLimitExceeded: 'Gas Limit 超限',
     gasLimitExceededDesc: '该笔交易可能含有一些特殊的代币合约导致该笔批量交易所需 Gas 异常偏高，建议移除这类交易后重试（或分批发送）。',
-    gasLimitTooLow: 'Gas Limit 设置过低：点击交易确认弹窗中的"高级选项"，检查并增加 Gas Limit',
-    gasPriceTooHigh: 'Gas Price 设置过高：如果显示的 Gas 费用异常高（如 0.03 ETH），请在交易确认弹窗中手动调整 Gas Price',
-    tip: '提示：系统已自动将交易限制在最多 10 笔。如果仍然超过限制，请尝试减少交易复杂度或增加 MetaMask 的 Gas 上限。',
     smartAccountError: '需要关闭智能账户功能',
     smartAccountErrorDesc: '检测到账户已升级为不支持的合约版本。请按照以下步骤操作：',
     solutionSteps: '解决步骤：',
     openMetaMask: '打开 MetaMask 钱包',
     clickAccountIcon: '点击右上角 "☰"',
     selectAccountDetails: '选择 "账户详情"',
-    findSmartAccount: '找到 "智能账户" 选项',
-    clickDisableSmartAccount: '关闭相关链的智能账户',
+    findSmartAccount: '设置 "智能账户"',
+    clickDisableSmartAccount: '关闭相关链的智能账户（需支付Gas费）',
     returnAndRetry: '返回此页面重新尝试批量交易',
     smartAccountTip: '提示：你的账户将会自动重新升级为 MetaMask Smart Account，并进行批量交易。',
     addTransactionFirst: '请先添加交易',
     addTransactionFirstDesc: '在上方"配置批量交易"区域添加至少一笔交易后才能执行批量操作',
-    viewFullData: '查看完整 transactions.json 数据',
     checkDataField: '请检查 data 字段：应为 138 字符（含 0x 前缀）',
     transactionCount: '笔交易',
     showFirst: '仅显示前',
@@ -197,7 +194,7 @@ const texts = {
     amountEthLabel: '金额 (ETH/BNB/POLY)',
     dataFieldLabel: 'Data 字段',
     clearList: '清空列表',
-    batchTransactionsTitle: '🔄️ 执行原子批量交易',
+    batchTransactionsTitle: '执行原子批量交易',
     // 分享功能
     share: '分享',
     tweet: '推文',
@@ -205,7 +202,7 @@ const texts = {
   },
   en: {
     title: 'Atomic Batch Transaction Tool',
-    subtitle: 'Powered by Metamask Smart Accounts (EIP-7702), making batch transactions safer, easier, more efficient, and more gas-saving!',
+    subtitle: 'Powered by Metamask Smart Accounts, making batch transactions safer, easier and more gas-saving!',
     connectWallet: 'ConnectWallet',
     disconnect: 'Disconnect',
     switchNetwork: 'Switch Network',
@@ -221,10 +218,11 @@ const texts = {
     tokenAddress: 'Token Address',
     data: 'Data',
     add: 'Add',
-    transactionList: 'Transaction List',
+    transactionList: '☰ Transaction List',
     noTransactions: 'No transactions',
     sendBatchTransaction: 'Send Batch Transaction',
-    sendingTransaction: '⌛️ Sending Transaction...',
+    sendBatchTransactionWithGas: 'Send Batch Transaction (Only 1 Gas Fee)',
+    sendingTransaction: 'Sending Transaction...',
     checkStatus: '🔍️ Check Transaction Status',
     checkingStatus: 'Checking Status...',
     transactionHash: 'Transaction Hash',
@@ -236,22 +234,18 @@ const texts = {
     failed: 'Failed',
     gasLimitExceeded: 'Gas Limit Exceeded',
     gasLimitExceededDesc: 'This transaction may contain some special token contracts, causing the gas required for this batch transaction to be unusually high. Please remove those transactions and retry (or split into smaller batches).',
-    gasLimitTooLow: 'Gas Limit set too low: Click "Advanced Options" in the transaction confirmation popup to check and increase Gas Limit',
-    gasPriceTooHigh: 'Gas Price set too high: If the displayed gas fee is abnormally high (e.g., 0.03 ETH), manually adjust Gas Price in the transaction confirmation popup',
-    tip: 'Tip: The system has automatically limited transactions to a maximum of 10. If it still exceeds the limit, try reducing transaction complexity or increasing MetaMask\'s gas limit.',
     smartAccountError: 'Need to disable smart account feature',
     smartAccountErrorDesc: 'Detected that the account has been upgraded to an unsupported contract version. Please follow these steps:',
     solutionSteps: 'Solution steps:',
     openMetaMask: 'Open MetaMask wallet',
     clickAccountIcon: 'Click the "☰" in the top right corner',
     selectAccountDetails: 'Select "Account Details"',
-    findSmartAccount: 'Find the "Smart Account" option',
-    clickDisableSmartAccount: 'Close the smart account related to the chain',
+    findSmartAccount: 'Set up "Smart Account"',
+    clickDisableSmartAccount: 'Close the smart account related to the chain (requires gas fee)',
     returnAndRetry: 'Return to this page and retry batch transactions',
     smartAccountTip: 'Tip: Your account will be automatically upgraded to a MetaMask Smart Account and will be able to perform batch transactions.',
     addTransactionFirst: 'Please add transactions first',
     addTransactionFirstDesc: 'Add at least one transaction in the "Configure Batch Transactions" area above before executing batch operations',
-    viewFullData: 'View full transactions.json data',
     checkDataField: 'Please check the data field: should be 138 characters (including 0x prefix)',
     transactionCount: 'transactions',
     showFirst: 'Show first',
@@ -356,7 +350,7 @@ const texts = {
     amountEthLabel: 'Amount (ETH/BNB/POLY)',
     dataFieldLabel: 'Data field',
     clearList: 'Clear list',
-    batchTransactionsTitle: '🔄️ Execute atomic batch transactions',
+    batchTransactionsTitle: 'Execute atomic batch transactions',
     // 分享功能
     share: 'Share',
     tweet: 'Tweet',
@@ -380,6 +374,8 @@ export default function Home() {
   const [isChainDropdownOpen, setIsChainDropdownOpen] = useState(false);
   const chainDropdownRef = useRef<HTMLDivElement>(null);
   const [metaMaskError, setMetaMaskError] = useState<string | null>(null);
+  const [isTransactionTypeDropdownOpen, setIsTransactionTypeDropdownOpen] = useState(false);
+  const transactionTypeDropdownRef = useRef<HTMLDivElement>(null);
   
   // 分享功能
   const handleShare = async () => {
@@ -473,6 +469,9 @@ export default function Home() {
     const handleClickOutside = (event: MouseEvent) => {
       if (chainDropdownRef.current && !chainDropdownRef.current.contains(event.target as Node)) {
         setIsChainDropdownOpen(false);
+      }
+      if (transactionTypeDropdownRef.current && !transactionTypeDropdownRef.current.contains(event.target as Node)) {
+        setIsTransactionTypeDropdownOpen(false);
       }
     };
 
@@ -901,7 +900,7 @@ export default function Home() {
               
               {/* Wallet connection button */}
               <button
-                className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors min-w-[140px] ${
+                className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
                   isConnected
                     ? "bg-red-50 hover:bg-red-100 text-red-700 border border-red-300"
                     : !isMetaMaskAvailable
@@ -1023,9 +1022,20 @@ export default function Home() {
             {/* 链信息显示 */}
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <div className="text-sm text-blue-800">
-                <div className="font-medium">🌐 {t.currentChainLabel}: {CHAIN_NAMES[chainId as keyof typeof CHAIN_NAMES] || `${t.unknownChain} (${chainId})`}</div>
-                <div>ℹ️ {t.chainIdLabel}: {chainId}</div>
-                {address && <div>👤 {t.addressLabel}: {address.slice(0, 6)}...{address.slice(-4)}</div>}
+                <div className="font-medium flex items-center gap-2">
+                  <Image src="/blockchain2.svg" alt="Chain" width={16} height={16} />
+                  {t.currentChainLabel}: {CHAIN_NAMES[chainId as keyof typeof CHAIN_NAMES] || `${t.unknownChain} (${chainId})`}
+              </div>
+                <div className="flex items-center gap-2">
+                  <Image src="/id.svg" alt="Chain ID" width={16} height={16} />
+                  {t.chainIdLabel}: {chainId}
+                </div>
+                {address && (
+                  <div className="flex items-center gap-2">
+                    <Image src="/address.svg" alt="Address" width={16} height={16} />
+                    {t.addressLabel}: {address.slice(0, 6)}...{address.slice(-4)}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -1033,11 +1043,14 @@ export default function Home() {
 
         {/* Manual transaction configuration section */}
         <div className="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg w-full">
-          <h2 className="text-xl font-semibold mb-4">✏️ {t.configureTransactions}</h2>
+          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+            <Image src="/user-config.svg" alt="Configure" width={24} height={24} />
+            {t.configureTransactions}
+          </h2>
           <p className="text-xs text-gray-500 mt-[-12px] mb-3">
             {language === 'zh'
-              ? '🚨 最多只能添加 10 笔交易，超过部分不会被发送。'
-              : '🚨 You can configure up to 10 transactions, any excess will not be sent.'}
+              ? '最多只能添加 10 笔交易，超过部分不会被发送。'
+              : 'You can configure up to 10 transactions, any excess will not be sent.'}
           </p>
 
           {/* 手动输入表单 */}
@@ -1048,16 +1061,122 @@ export default function Home() {
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 {t.transactionType}
               </label>
-              <select
-                value={selectedTransactionType}
-                onChange={(e) => setSelectedTransactionType(e.target.value as 'native' | 'erc20_transfer' | 'erc20_approve' | 'custom')}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="native">❇️ {t.nativeTransfer}</option>
-                <option value="erc20_transfer">🪙 {t.erc20Transfer}</option>
-                <option value="erc20_approve">🔐 {t.erc20Approve}</option>
-                <option value="custom">⚙️ {t.customTransaction}</option>
-              </select>
+              <div className="relative" ref={transactionTypeDropdownRef}>
+                {/* Dropdown menu trigger */}
+                <button
+                  onClick={() => setIsTransactionTypeDropdownOpen(!isTransactionTypeDropdownOpen)}
+                  className="w-full flex items-center justify-between gap-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <div className="flex items-center gap-2">
+                    {selectedTransactionType === 'native' && (
+                      <>
+                        <Image src="/ethereum3.svg" alt="Native" width={16} height={16} />
+                        <span>{t.nativeTransfer}</span>
+                      </>
+                    )}
+                    {selectedTransactionType === 'erc20_transfer' && (
+                      <>
+                        <Image src="/coins.svg" alt="ERC20 Transfer" width={16} height={16} />
+                        <span>{t.erc20Transfer}</span>
+                      </>
+                    )}
+                    {selectedTransactionType === 'erc20_approve' && (
+                      <>
+                        <Image src="/permissions.svg" alt="ERC20 Approve" width={16} height={16} />
+                        <span>{t.erc20Approve}</span>
+                      </>
+                    )}
+                    {selectedTransactionType === 'custom' && (
+                      <>
+                        <Image src="/custom.svg" alt="Custom" width={16} height={16} />
+                        <span>{t.customTransaction}</span>
+                      </>
+                    )}
+                  </div>
+                  <svg
+                    className={`w-4 h-4 transition-transform ${isTransactionTypeDropdownOpen ? 'rotate-180' : ''}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {/* Dropdown menu options */}
+                {isTransactionTypeDropdownOpen && (
+                  <div className="absolute top-full left-0 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg z-50">
+                    <button
+                      onClick={() => {
+                        setSelectedTransactionType('native');
+                        setIsTransactionTypeDropdownOpen(false);
+                      }}
+                      className={`w-full flex items-center gap-3 px-3 py-2 text-sm text-left hover:bg-gray-100 dark:hover:bg-gray-700 first:rounded-t-lg ${
+                        selectedTransactionType === 'native' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300'
+                      }`}
+                    >
+                      <Image src="/ethereum3.svg" alt="Native" width={16} height={16} />
+                      <span>{t.nativeTransfer}</span>
+                      {selectedTransactionType === 'native' && (
+                        <svg className="w-4 h-4 ml-auto" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      )}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSelectedTransactionType('erc20_transfer');
+                        setIsTransactionTypeDropdownOpen(false);
+                      }}
+                      className={`w-full flex items-center gap-3 px-3 py-2 text-sm text-left hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                        selectedTransactionType === 'erc20_transfer' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300'
+                      }`}
+                    >
+                      <Image src="/coins.svg" alt="ERC20 Transfer" width={16} height={16} />
+                      <span>{t.erc20Transfer}</span>
+                      {selectedTransactionType === 'erc20_transfer' && (
+                        <svg className="w-4 h-4 ml-auto" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      )}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSelectedTransactionType('erc20_approve');
+                        setIsTransactionTypeDropdownOpen(false);
+                      }}
+                      className={`w-full flex items-center gap-3 px-3 py-2 text-sm text-left hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                        selectedTransactionType === 'erc20_approve' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300'
+                      }`}
+                    >
+                      <Image src="/permissions.svg" alt="ERC20 Approve" width={16} height={16} />
+                      <span>{t.erc20Approve}</span>
+                      {selectedTransactionType === 'erc20_approve' && (
+                        <svg className="w-4 h-4 ml-auto" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      )}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSelectedTransactionType('custom');
+                        setIsTransactionTypeDropdownOpen(false);
+                      }}
+                      className={`w-full flex items-center gap-3 px-3 py-2 text-sm text-left hover:bg-gray-100 dark:hover:bg-gray-700 last:rounded-b-lg ${
+                        selectedTransactionType === 'custom' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300'
+                      }`}
+                    >
+                      <Image src="/custom.svg" alt="Custom" width={16} height={16} />
+                      <span>{t.customTransaction}</span>
+                      {selectedTransactionType === 'custom' && (
+                        <svg className="w-4 h-4 ml-auto" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="space-y-3">
@@ -1265,12 +1384,32 @@ export default function Home() {
                                  {customTransactions.map((tx, index) => (
                    <div key={index} className="flex items-center justify-between bg-white dark:bg-gray-800 p-3 rounded border border-purple-200 dark:border-purple-700">
                      <div className="flex-1">
-                       <div className="text-sm font-medium text-purple-900 dark:text-purple-100">
-                         {index + 1}. 
-                         {tx.type === 'native_transfer' && ` ❇️ ${t.nativeTransfer}`}
-                         {tx.type === 'erc20_transfer' && ' 🪙 ERC20 Transfer'}
-                         {tx.type === 'erc20_approve' && ' 🔐 ERC20 Approve'}
-                         {tx.type === 'custom_data' && ' ⚙️ Custom'}
+                       <div className="text-sm font-medium text-purple-900 dark:text-purple-100 flex items-center gap-2">
+                         <span>{index + 1}.</span>
+                         {tx.type === 'native_transfer' && (
+                           <>
+                             <Image src="/ethereum3.svg" alt="Native" width={16} height={16} />
+                             <span>{t.nativeTransfer}</span>
+                           </>
+                         )}
+                         {tx.type === 'erc20_transfer' && (
+                           <>
+                             <Image src="/coins.svg" alt="ERC20 Transfer" width={16} height={16} />
+                             <span>ERC20 Transfer</span>
+                           </>
+                         )}
+                         {tx.type === 'erc20_approve' && (
+                           <>
+                             <Image src="/permissions.svg" alt="ERC20 Approve" width={16} height={16} />
+                             <span>ERC20 Approve</span>
+                           </>
+                         )}
+                         {tx.type === 'custom_data' && (
+                           <>
+                             <Image src="/custom.svg" alt="Custom" width={16} height={16} />
+                             <span>Custom</span>
+                           </>
+                         )}
                        </div>
                        <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
                          {tx.type !== 'native_transfer' && (
@@ -1307,12 +1446,15 @@ export default function Home() {
         {/* Batch transaction section */}
         <div className="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg w-full">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold">{t.batchTransactionsTitle}</h2>
+            <h2 className="text-xl font-semibold flex items-center gap-2">
+              <Image src="/run.svg" alt="Execute" width={24} height={24} />
+              {t.batchTransactionsTitle}
+            </h2>
             {(() => {
               const MAX_BATCH_SIZE = 10;
               const isOverLimit = customTransactions.length > MAX_BATCH_SIZE;
               return (
-                <div className={`text-sm font-medium px-3 py-1 rounded ${
+                <div className={`text-xs font-medium px-3 py-1 rounded ${
                   isOverLimit 
                     ? 'bg-red-100 text-red-700 border border-red-300' 
                     : 'bg-blue-100 text-blue-700 border border-blue-300'
@@ -1334,22 +1476,42 @@ export default function Home() {
                 
                 return (
                   <>
-                    <h3 className="text-sm font-medium text-blue-800 mb-2">
+                    <h3 className="text-xs font-medium text-blue-800 mb-2">
                       {language === 'zh' ? `将发送 ${displayedTransactions.length} 笔交易` : `Will send ${displayedTransactions.length} transactions`}
                       {wasTruncated && <span className="text-orange-600 text-xs ml-2">⚠️ {language === 'zh' ? `共 ${customTransactions.length} 笔，仅显示前 10 笔` : `Total ${customTransactions.length}, showing first 10`}</span>}
                     </h3>
-                    <ul className="text-sm text-blue-700 space-y-1 mb-3">
+                    <ul className="text-xs text-blue-700 space-y-1 mb-3">
                       {displayedTransactions.map((transaction, index) => (
                   <li key={index} className="flex items-start gap-2">
                     <span className="w-2 h-2 bg-blue-500 rounded-full mt-1.5 flex-shrink-0"></span>
                     <div className="flex-1">
-                      <div className="font-medium">
-                        {transaction.type === 'native_transfer' && '❇️ Native Transfer'}
-                        {transaction.type === 'erc20_transfer' && '🪙 ERC20 Transfer'}
-                        {transaction.type === 'erc20_approve' && '🔐 ERC20 Approve'}
-                        {transaction.type === 'custom_data' && '⚙️ Custom Data'}
+                      <div className="font-medium flex items-center gap-2">
+                        {transaction.type === 'native_transfer' && (
+                          <>
+                            <Image src="/ethereum3.svg" alt="Native" width={16} height={16} />
+                            <span>Native Transfer</span>
+                          </>
+                        )}
+                        {transaction.type === 'erc20_transfer' && (
+                          <>
+                            <Image src="/coins.svg" alt="ERC20 Transfer" width={16} height={16} />
+                            <span>ERC20 Transfer</span>
+                          </>
+                        )}
+                        {transaction.type === 'erc20_approve' && (
+                          <>
+                            <Image src="/permissions.svg" alt="ERC20 Approve" width={16} height={16} />
+                            <span>ERC20 Approve</span>
+                          </>
+                        )}
+                        {transaction.type === 'custom_data' && (
+                          <>
+                            <Image src="/custom.svg" alt="Custom" width={16} height={16} />
+                            <span>Custom Data</span>
+                          </>
+                        )}
                       </div>
-                      <div className="text-xs text-gray-500 mt-1">
+                      <div className="text-[0.65rem] text-gray-500 mt-1">
                         {transaction.type !== 'native_transfer' && (
                           <>To: {transaction.to.slice(0, 6)}...{transaction.to.slice(-4)}</>
                         )}
@@ -1360,7 +1522,7 @@ export default function Home() {
                   </li>
                       ))}
                     </ul>
-                    <div className="text-sm font-medium text-blue-800 border-t border-blue-200 pt-2">
+                    <div className="text-xs font-medium text-blue-800 border-t border-blue-200 pt-2">
                       Total: {displayedTransactions.reduce((total, tx) => total + parseFloat(tx.value || '0'), 0)} ETH
                     </div>
                   </>
@@ -1385,15 +1547,25 @@ export default function Home() {
 
           {/* Send batch transaction button */}
           <button
-            className={`w-full rounded-lg border border-solid px-6 py-3 font-medium transition-colors mb-4 ${
+            className={`w-full rounded-lg border border-solid px-6 py-3 font-medium transition-colors mb-4 flex items-center justify-center gap-2 ${
               !isConnected || isPending || customTransactions.length === 0
                 ? "bg-gray-100 text-gray-400 border-gray-300 cursor-not-allowed"
-                : "bg-green-50 hover:bg-purple-400 text-blue-800 hover:text-green-700 border-green-300 cursor-pointer"
+                : "bg-green-700 hover:bg-green-800 text-yellow-300 border-green-800 cursor-pointer"
             }`}
             onClick={handleSendTransaction}
             disabled={!isConnected || isPending || customTransactions.length === 0}
           >
-            {isPending ? t.sendingTransaction : `💸 ${t.sendBatchTransaction}`}
+            {isPending ? (
+              <>
+                <div className="w-4 h-4 border-2 border-yellow-300 border-t-transparent rounded-full animate-spin"></div>
+                <span>{t.sendingTransaction}</span>
+              </>
+            ) : (
+              <>
+                <Image src="/send.svg" alt="Send" width={20} height={20} />
+                <span>{t.sendBatchTransactionWithGas}</span>
+              </>
+            )}
           </button>
 
           {/* Transaction state */}
@@ -1520,32 +1692,6 @@ export default function Home() {
             </div>
           )}
         </div>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
         </div>
       </main>
 
@@ -1643,54 +1789,6 @@ export default function Home() {
 
         </div>
       </div>
-      
-      <footer className="flex gap-[24px] flex-wrap items-center justify-center py-8">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }

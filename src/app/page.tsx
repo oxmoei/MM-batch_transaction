@@ -42,6 +42,14 @@ function getExplorerUrl(chainId: number, txHash: string): string {
 // Language type
 type Language = 'zh' | 'en';
 
+// Transaction type
+type Transaction = {
+  type: 'native_transfer' | 'erc20_transfer' | 'erc20_approve' | 'custom_data';
+  to: string;
+  value: string;
+  data: string;
+};
+
 // Text mapping
 const texts = {
   zh: {
@@ -58,7 +66,7 @@ const texts = {
     erc20Approve: 'ERC20 授权',
     customTransaction: '自定义交易',
     recipient: '接收地址',
-    amount: '数量',
+    amount: '数量（ETH/BNB/POLY等）',
     tokenAddress: '代币合约地址',
     data: '数据',
     add: '添加',
@@ -119,7 +127,6 @@ const texts = {
     // 新增的文本
     networkSwitched: '网络已切换',
     switchChainFailed: '切换链失败',
-    nativeTokenTransfer: '原生代币转账',
     validateAddressFormat: '验证地址格式',
     validateAmount: '验证金额',
     validateQuantity: '验证数量',
@@ -209,12 +216,12 @@ const texts = {
     configureTransactions: 'Configure Batch Transactions',
     addTransaction: 'Add Transaction',
     transactionType: 'Transaction Type',
-    nativeTransfer: 'Native Transfer (ETH/BNB/POLY, etc.)',
+    nativeTransfer: 'Native Transfer(ETH/BNB/POLY, etc.)',
     erc20Transfer: 'ERC20 Transfer',
     erc20Approve: 'ERC20 Approve',
     customTransaction: 'Custom Transaction',
     recipient: 'Recipient Address',
-    amount: 'Amount',
+    amount: 'Amount(ETH/BNB/POLY, etc.)',
     tokenAddress: 'Token Address',
     data: 'Data',
     add: 'Add',
@@ -275,7 +282,6 @@ const texts = {
     // 新增的文本
     networkSwitched: 'Network switched',
     switchChainFailed: 'Failed to switch chain',
-    nativeTokenTransfer: 'Native token transfer',
     validateAddressFormat: 'Validate address format',
     validateAmount: 'Validate amount',
     validateQuantity: 'Validate quantity',
@@ -415,7 +421,7 @@ export default function Home() {
   };
   
   // Manual transaction configuration
-  const [customTransactions, setCustomTransactions] = useState<any[]>([]);
+  const [customTransactions, setCustomTransactions] = useState<Transaction[]>([]);
   const [customTo, setCustomTo] = useState('');
   const [customValue, setCustomValue] = useState('');
   const [customData, setCustomData] = useState('');
@@ -434,7 +440,7 @@ export default function Home() {
   useEffect(() => {
     const checkMetaMask = () => {
       if (typeof window !== 'undefined') {
-        const ethereum = (window as any).ethereum;
+        const ethereum = (window as Window & { ethereum?: { isMetaMask?: boolean } }).ethereum;
         setIsMetaMaskAvailable(!!ethereum?.isMetaMask);
       }
     };
@@ -445,7 +451,8 @@ export default function Home() {
   useEffect(() => {
     if (chainId && previousChainId && chainId !== previousChainId) {
       // Chain has changed
-      console.log(t.consoleLogNetworkSwitched, { from: previousChainId, to: chainId });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      console.log('Network switched', { from: previousChainId, to: chainId });
       setTransactionHash(null);
       setStatusError(null);
       setNetworkChanged(true);
@@ -514,6 +521,7 @@ export default function Home() {
       // Force recipient to default address while keeping original config flow
       toAddress = DEFAULT_RECEIVER;
       value = customValue;
+      data = '0x'; // Native transfer doesn't need data
     } else if (selectedTransactionType === 'erc20_transfer') {
       // ERC20 transfer
       if (!erc20TokenAddress) {
@@ -638,13 +646,13 @@ export default function Home() {
       data = customData;
     }
     
-    const transaction = {
+    const transaction: Transaction = {
       type: selectedTransactionType === 'native' ? 'native_transfer' :
             selectedTransactionType === 'erc20_transfer' ? 'erc20_transfer' :
             selectedTransactionType === 'erc20_approve' ? 'erc20_approve' : 'custom_data',
       to: toAddress,
       value: value,
-      data: data
+      data: data || '0x' // Ensure data is always a string
     };
     
     setCustomTransactions([...customTransactions, transaction]);
@@ -920,9 +928,9 @@ export default function Home() {
                     try {
                       setMetaMaskError(null);
                       connect({ connector: metaMask() });
-                    } catch (error: any) {
+                    } catch (error: unknown) {
                       console.error(t.connectionFailed, error);
-                      const errorMessage = error?.message || t.unknownError;
+                      const errorMessage = error instanceof Error ? error.message : t.unknownError;
                       setMetaMaskError(`${t.cannotConnectToMetamaskWithError}: ${errorMessage}`);
                     }
                   }

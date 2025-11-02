@@ -25,7 +25,7 @@ export const wagmiConfig = createConfig({
   chains: [mainnet, polygon, bsc, arbitrum, base],
   connectors,
   multiInjectedProviderDiscovery: false,
-  ssr: true,
+  ssr: false,
   transports: {
     [mainnet.id]: http('https://eth.llamarpc.com', { retryCount: 3 }),
     [polygon.id]: http('https://polygon-rpc.com', { retryCount: 3 }),

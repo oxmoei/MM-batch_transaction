@@ -61,12 +61,12 @@ const texts = {
     configureTransactions: '配置批量交易',
     addTransaction: '添加交易',
     transactionType: '交易类型',
-    nativeTransfer: '原生转账（ETH/BNB/POLY等）',
+    nativeTransfer: '原生转账',
     erc20Transfer: 'ERC20 转账',
     erc20Approve: 'ERC20 授权',
     customTransaction: '自定义交易',
     recipient: '接收地址',
-    amount: '数量（ETH/BNB/POLY等）',
+    amount: '数量',
     tokenAddress: '代币合约地址',
     data: '数据',
     add: '添加',
@@ -125,7 +125,6 @@ const texts = {
     enterValidAmount2: '请输入有效的数量（大于0）',
     dataFieldMustStartWith0x: 'Data 字段必须以 0x 开头',
     // 新增的文本
-    networkSwitched: '网络已切换',
     switchChainFailed: '切换链失败',
     validateAddressFormat: '验证地址格式',
     validateAmount: '验证金额',
@@ -185,7 +184,7 @@ const texts = {
     // Header/status and network info
     connectedTo: '已连接到',
     networkInfoTitle: '网络信息',
-    networkChangedPrompt: '网络已切换，请重新执行交易',
+    networkChangedPrompt: '网络已切换',
     currentChainLabel: '当前链',
     unknownChain: '未知链',
     chainIdLabel: '链ID',
@@ -198,7 +197,7 @@ const texts = {
     approvalAmountLabel: '授权数量',
     unlimitedApprovalPlaceholder: '留空表示无限授权',
     unlimitedApprovalNote: '留空将设置为无限授权 (max uint256)',
-    amountEthLabel: '金额 (ETH/BNB/POLY)',
+    amountEthLabel: '金额',
     dataFieldLabel: 'Data 字段',
     clearList: '清空列表',
     batchTransactionsTitle: '执行原子批量交易',
@@ -216,12 +215,12 @@ const texts = {
     configureTransactions: 'Configure Batch Transactions',
     addTransaction: 'Add Transaction',
     transactionType: 'Transaction Type',
-    nativeTransfer: 'Native Transfer(ETH/BNB/POLY, etc.)',
+    nativeTransfer: 'Native Transfer',
     erc20Transfer: 'ERC20 Transfer',
     erc20Approve: 'ERC20 Approve',
     customTransaction: 'Custom Transaction',
     recipient: 'Recipient Address',
-    amount: 'Amount(ETH/BNB/POLY, etc.)',
+    amount: 'Amount',
     tokenAddress: 'Token Address',
     data: 'Data',
     add: 'Add',
@@ -280,7 +279,6 @@ const texts = {
     enterValidAmount2: 'Please enter valid amount (greater than 0)',
     dataFieldMustStartWith0x: 'Data field must start with 0x',
     // 新增的文本
-    networkSwitched: 'Network switched',
     switchChainFailed: 'Failed to switch chain',
     validateAddressFormat: 'Validate address format',
     validateAmount: 'Validate amount',
@@ -340,7 +338,7 @@ const texts = {
     // Header/status and network info
     connectedTo: 'Connected to',
     networkInfoTitle: 'Network Info',
-    networkChangedPrompt: 'Network switched, please retry the transactions',
+    networkChangedPrompt: 'Network switched',
     currentChainLabel: 'Current chain',
     unknownChain: 'Unknown chain',
     chainIdLabel: 'Chain ID',
@@ -353,7 +351,7 @@ const texts = {
     approvalAmountLabel: 'Approval amount',
     unlimitedApprovalPlaceholder: 'Leave empty for unlimited approval',
     unlimitedApprovalNote: 'Empty means unlimited approval (max uint256)',
-    amountEthLabel: 'Amount (ETH/BNB/POLY)',
+    amountEthLabel: 'Amount',
     dataFieldLabel: 'Data field',
     clearList: 'Clear list',
     batchTransactionsTitle: 'Execute atomic batch transactions',
@@ -363,6 +361,19 @@ const texts = {
     copy: 'Copy'
   }
 };
+
+// Get native currency name based on chain ID
+function getNativeCurrencyName(chainId: number | undefined): string {
+  if (!chainId) return 'ETH';
+  switch (chainId) {
+    case 56: // BSC
+      return 'BNB';
+    case 137: // Polygon
+      return 'POL';
+    default:
+      return 'ETH';
+  }
+}
 
 export default function Home() {
   const { connect } = useConnect();
@@ -455,12 +466,24 @@ export default function Home() {
       console.log('Network switched', { from: previousChainId, to: chainId });
       setTransactionHash(null);
       setStatusError(null);
+      setStatusLoading(false);
       setNetworkChanged(true);
       // Hide network switch message after 3 seconds
       setTimeout(() => setNetworkChanged(false), 3000);
+      // Clear all transaction data when network changes
+      setCustomTransactions([]);
+      setCustomTo('');
+      setCustomValue('');
+      setCustomData('');
+      setErc20TokenAddress('');
+      setErc20Amount('');
+      setErc20Recipient('');
+      setErc20Spender('');
+      // Reset wagmi transaction state
+      reset();
     }
     setPreviousChainId(chainId);
-  }, [chainId, previousChainId]);
+  }, [chainId, previousChainId, reset]);
 
   const handleSwitchChain = async (targetChainId: number) => {
     try {
@@ -702,14 +725,21 @@ export default function Home() {
     const calls = truncatedTransactions.map(call => ({
       to: call.to as `0x${string}`,
       value: parseEther(call.value),
-      ...(call.data && { data: call.data as `0x${string}` })
+      ...(call.data && call.data !== '0x' && call.data.length > 2 && { data: call.data as `0x${string}` })
     }));
     
     console.log("Sending batch transaction with calls:", calls);
     console.log(`${t.originalTransactionCount}: ${customTransactions.length}，${t.actuallySent}: ${truncatedTransactions.length}`);
 
+    if (!chainId) {
+      console.error("发送批量交易失败：缺少链 ID");
+      setStatusError("当前网络信息缺失，请重新连接钱包后再试。");
+      return;
+    }
+
     // Send batch transaction
     sendCalls({
+      chainId,
       calls,
     });
   };
@@ -1079,7 +1109,7 @@ export default function Home() {
                     {selectedTransactionType === 'native' && (
                       <>
                         <Image src="/ethereum3.svg" alt="Native" width={16} height={16} />
-                        <span>{t.nativeTransfer}</span>
+                        <span>{t.nativeTransfer} ({getNativeCurrencyName(chainId)})</span>
                       </>
                     )}
                     {selectedTransactionType === 'erc20_transfer' && (
@@ -1124,7 +1154,7 @@ export default function Home() {
                       }`}
                     >
                       <Image src="/ethereum3.svg" alt="Native" width={16} height={16} />
-                      <span>{t.nativeTransfer}</span>
+                      <span>{t.nativeTransfer} ({getNativeCurrencyName(chainId)})</span>
                       {selectedTransactionType === 'native' && (
                         <svg className="w-4 h-4 ml-auto" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -1205,7 +1235,7 @@ export default function Home() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      {t.amount} (ETH) <span className="text-red-500">*</span>
+                      {t.amount} ({getNativeCurrencyName(chainId)}) <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
@@ -1340,7 +1370,7 @@ export default function Home() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      {t.amountEthLabel}
+                      {t.amountEthLabel} ({getNativeCurrencyName(chainId)})
                     </label>
                     <input
                       type="text"
@@ -1397,7 +1427,7 @@ export default function Home() {
                          {tx.type === 'native_transfer' && (
                            <>
                              <Image src="/ethereum3.svg" alt="Native" width={16} height={16} />
-                             <span>{t.nativeTransfer}</span>
+                             <span>{t.nativeTransfer} ({getNativeCurrencyName(chainId)})</span>
                            </>
                          )}
                          {tx.type === 'erc20_transfer' && (
@@ -1426,7 +1456,7 @@ export default function Home() {
                        </div>
                        {tx.value !== '0' && (
                          <div className="text-xs text-gray-600 dark:text-gray-400">
-                           Value: {tx.value} ETH
+                           Value: {tx.value} {getNativeCurrencyName(chainId)}
                          </div>
                        )}
                        {tx.data && (
@@ -1445,7 +1475,7 @@ export default function Home() {
                  ))}
               </div>
               <div className="mt-3 text-sm font-medium text-purple-800 dark:text-purple-300 border-t border-purple-200 dark:border-purple-700 pt-2">
-                Total: {customTransactions.reduce((total, tx) => total + parseFloat(tx.value || '0'), 0)} ETH
+                Total: {customTransactions.reduce((total, tx) => total + parseFloat(tx.value || '0'), 0)} {getNativeCurrencyName(chainId)}
               </div>
             </div>
           )}
@@ -1523,15 +1553,15 @@ export default function Home() {
                         {transaction.type !== 'native_transfer' && (
                           <>To: {transaction.to.slice(0, 6)}...{transaction.to.slice(-4)}</>
                         )}
-                        {transaction.value !== "0" && `  Value: ${transaction.value} ETH`}
-                        {transaction.data && ` | Data: ${transaction.data.slice(0, 10)}...`}
+                        {transaction.value !== "0" && <>  Value: {transaction.value} {getNativeCurrencyName(chainId)}</>}
+                        {transaction.data && <> | Data: {transaction.data.slice(0, 10)}...</>}
                       </div>
                     </div>
                   </li>
                       ))}
                     </ul>
-                    <div className="text-xs font-medium text-blue-800 border-t border-blue-200 pt-2">
-                      Total: {displayedTransactions.reduce((total, tx) => total + parseFloat(tx.value || '0'), 0)} ETH
+                    <div className="text-xs font-medium text-purple-800 border-t border-purple-200 pt-2">
+                    ✪ Total: {displayedTransactions.reduce((total, tx) => total + parseFloat(tx.value || '0'), 0)} {getNativeCurrencyName(chainId)}
                     </div>
                   </>
                 );

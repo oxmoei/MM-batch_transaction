@@ -3,8 +3,8 @@ import "./globals.css";
 import { AppProvider } from "@/providers/AppProvider";
 
 export const metadata: Metadata = {
-  title: "Atomic Batch Transaction Tool - EIP-7702",
-  description: "Powered by MetaMask Smart Accounts, making batch transactions safer, easier and more gas-saving!",
+  title: "EIP-7702 Batch Transaction Tool",
+  description: "Powered by MetaMask Smart Accounts, making batch transactions safer, easier, more efficient and more gas-saving!",
 };
 
 export default function RootLayout({

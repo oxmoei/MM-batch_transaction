@@ -208,7 +208,7 @@ const texts = {
   },
   en: {
     title: 'Atomic Batch Transaction Tool',
-    subtitle: 'Powered by Metamask Smart Accounts, making batch transactions safer, easier and more gas-saving!',
+    subtitle: 'Powered by Metamask Smart Accounts, making batch transactions safer, easier, more efficient and more gas-saving!',
     connectWallet: 'ConnectWallet',
     disconnect: 'Disconnect',
     switchNetwork: 'Switch Network',
